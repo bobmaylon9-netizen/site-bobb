@@ -52,11 +52,6 @@
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:active {
-      transform: scale(0.97);
     }
 
     .mensagem {
@@ -83,60 +78,76 @@
 
   <div class="card">
     <h1>Oi, Nicolly 💕</h1>
-    <p>Tem coisas simples que dizem mais do que mil palavras.</p>
+    <p>Tem coisas que não precisam ser explicadas.</p>
 
     <button onclick="acao()">Clica aqui 💖</button>
 
-    <div id="m1" class="mensagem">
-      Você tem uma energia que muda o clima de qualquer lugar.
-    </div>
-    <div id="m2" class="mensagem">
-      Não é exagero… você realmente marca presença.
-    </div>
-    <div id="m3" class="mensagem">
-      Esse toque agora combina com você 😌🎶
-    </div>
-    <div id="m4" class="mensagem">
-      Só queria que você soubesse disso.
-    </div>
+    <div id="m1" class="mensagem">Você tem uma vibe que não passa despercebida.</div>
+    <div id="m2" class="mensagem">É calma… mas ao mesmo tempo intensa.</div>
+    <div id="m3" class="mensagem">Esse som agora explica melhor do que palavras.</div>
+    <div id="m4" class="mensagem">Só queria que você sentisse isso.</div>
   </div>
 
   <script>
     function vibrar() {
       if (navigator.vibrate) {
-        navigator.vibrate([120, 60, 120]); // vibração curta e elegante
+        navigator.vibrate([120, 80, 120]);
       }
     }
 
-    function tocarToque() {
+    function toqueChaseAtlantic() {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       const ctx = new AudioContext();
 
-      const osc = ctx.createOscillator();
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
       const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
 
-      osc.type = "sine";        // som suave
-      osc.frequency.value = 220; // vibe grave (estilo intro)
-      gain.gain.value = 0.25;   // volume automático baixo
+      // Osciladores (camada grave + atmosférica)
+      osc1.type = "sine";
+      osc1.frequency.value = 110;
 
-      osc.connect(gain);
+      osc2.type = "triangle";
+      osc2.frequency.value = 220;
+      osc2.detune.value = -15;
+
+      // Filtro escuro (dark vibe)
+      filter.type = "lowpass";
+      filter.frequency.value = 700;
+
+      // Volume com fade
+      gain.gain.value = 0;
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gain);
       gain.connect(ctx.destination);
 
-      osc.start();
+      osc1.start();
+      osc2.start();
+
+      // Fade in
+      gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + 1);
+
+      // Fade out
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 3);
+
       setTimeout(() => {
-        osc.stop();
+        osc1.stop();
+        osc2.stop();
         ctx.close();
-      }, 1200); // toque curto (1.2s)
+      }, 3200);
     }
 
     function acao() {
       vibrar();
-      tocarToque();
+      toqueChaseAtlantic();
 
-      setTimeout(() => m1.style.display = "block", 500);
-      setTimeout(() => m2.style.display = "block", 1500);
-      setTimeout(() => m3.style.display = "block", 2500);
-      setTimeout(() => m4.style.display = "block", 3500);
+      setTimeout(() => m1.style.display = "block", 600);
+      setTimeout(() => m2.style.display = "block", 1600);
+      setTimeout(() => m3.style.display = "block", 2600);
+      setTimeout(() => m4.style.display = "block", 3600);
     }
   </script>
 
