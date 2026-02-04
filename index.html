@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pra você, Nicolly 💖</title>
 
   <style>
-    * { box-sizing: border-box; }
-
     body {
       margin: 0;
       min-height: 100vh;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       font-family: Arial, sans-serif;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       padding: 20px;
     }
 
     .card {
       width: 100%;
       max-width: 360px;
-      background: rgba(255,255,255,0.96);
-      border-radius: 26px;
-      padding: 26px;
+      background: white;
+      border-radius: 25px;
+      padding: 25px;
       text-align: center;
-      box-shadow: 0 18px 45px rgba(0,0,0,0.4);
-      animation: fadeIn 1.2s ease;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
     }
 
     h1 {
@@ -39,7 +36,7 @@
     p {
       color: #444;
       font-size: 15px;
-      margin-bottom: 16px;
+      margin-bottom: 15px;
     }
 
     button {
@@ -60,17 +57,6 @@
       color: #e63946;
       font-size: 16px;
       font-weight: bold;
-      animation: fadeUp 0.8s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -78,73 +64,34 @@
 
   <div class="card">
     <h1>Oi, Nicolly 💕</h1>
-    <p>Tem coisas simples que dizem mais do que mil palavras.</p>
+    <p>Clica no botão com calma…</p>
 
     <button onclick="acao()">Clica aqui 💖</button>
 
-    <div id="m1" class="mensagem">Você é especial demais pra não receber um carinho assim💫
-    <div id="m2" class="mensagem">Você tem uma vibe que não passa despercebida.</div>
-    <div id="m3" class="mensagem">É calma… mas ao mesmo tempo intensa.</div>
-    <div id="m4" class="mensagem">Esse som agora explica melhor do que palavras.</div>
-    <div id="m5" class="mensagem">Só queria que você sentisse isso.</div>
+    <div id="m1" class="mensagem">Você tem uma vibe diferente.</div>
+    <div id="m2" class="mensagem">Não é todo mundo que passa e marca.</div>
+    <div id="m3" class="mensagem">Essa música agora explica melhor.</div>
+    <div id="m4" class="mensagem">Só queria que você sentisse isso.</div>
   </div>
 
+  <!-- MÚSICA (já pega o arquivo musica.mp3 do GitHub) -->
+  <audio id="musica" preload="auto">
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
-    function vibrar() {
+    function acao() {
+      // vibração no celular
       if (navigator.vibrate) {
         navigator.vibrate([120, 80, 120]);
       }
-    }
 
-    function toqueChaseAtlantic() {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioContext();
+      // tocar música
+      const musica = document.getElementById("musica");
+      musica.volume = 0.25;
+      musica.play();
 
-      const osc1 = ctx.createOscillator();
-      const osc2 = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const filter = ctx.createBiquadFilter();
-
-      // Osciladores (camada grave + atmosférica)
-      osc1.type = "sine";
-      osc1.frequency.value = 110;
-
-      osc2.type = "triangle";
-      osc2.frequency.value = 220;
-      osc2.detune.value = -15;
-
-      // Filtro escuro (dark vibe)
-      filter.type = "lowpass";
-      filter.frequency.value = 700;
-
-      // Volume com fade
-      gain.gain.value = 0;
-
-      osc1.connect(filter);
-      osc2.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc1.start();
-      osc2.start();
-
-      // Fade in
-      gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + 1);
-
-      // Fade out
-      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 3);
-
-      setTimeout(() => {
-        osc1.stop();
-        osc2.stop();
-        ctx.close();
-      }, 3200);
-    }
-
-    function acao() {
-      vibrar();
-      toqueChaseAtlantic();
-
+      // mostrar frases
       setTimeout(() => m1.style.display = "block", 600);
       setTimeout(() => m2.style.display = "block", 1600);
       setTimeout(() => m3.style.display = "block", 2600);
